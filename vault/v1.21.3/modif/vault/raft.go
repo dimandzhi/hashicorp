@@ -16,6 +16,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/dimandzhi/hashicorp/go-discover/provider/dns"
 	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/go-discover"
 	discoverk8s "github.com/hashicorp/go-discover/provider/k8s"
@@ -1559,6 +1560,7 @@ func newDiscover() (*discover.Discover, error) {
 	}
 
 	providers["k8s"] = &discoverk8s.Provider{}
+	providers["dns"] = &dns.Provider{}
 
 	return discover.New(
 		discover.WithProviders(providers),
