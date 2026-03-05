@@ -1,0 +1,4 @@
+[submodule "vault/v1.21.3/orig"]
+	path = vault/v1.21.3/orig
+	url = git@github.com:hashicorp/vault.git
+	branch = v1.21.3
