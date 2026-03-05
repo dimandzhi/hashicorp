@@ -10,7 +10,7 @@ fail() {
 }
 
 [[ -z "$GOARCH" ]] && fail "A GOARCH has not been defined"
-[[ -z "$GITHUB_TOKEN" ]] && fail "A GITHUB_TOKEN has not been defined"
+# [[ -z "$GITHUB_TOKEN" ]] && fail "A GITHUB_TOKEN has not been defined"
 
 host_arch="$(dpkg --print-architecture)"
 host_arch="${host_arch##*-}"
@@ -41,10 +41,10 @@ if ! ./tools.sh check-external; then
   ./tools.sh install-external
 fi
 
-# Assume that /build is where we've mounted the vault repo.
-git config --global --add safe.directory /build
-git config --global url."https://${GITHUB_TOKEN}@github.com".insteadOf "https://github.com"
+# # Assume that /build is where we've mounted the vault repo.
+# git config --global --add safe.directory /build
+# git config --global url."https://${GITHUB_TOKEN}@github.com".insteadOf "https://github.com"
 
-# Exec our command
-cd build || exit 1
+# # Exec our command
+# cd build || exit 1
 exec "$@"
