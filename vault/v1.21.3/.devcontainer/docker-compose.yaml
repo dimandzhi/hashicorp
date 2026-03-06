@@ -18,9 +18,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      # target: dev
+      target: dev
       args:
-        # GO_VERSION: 1.26.0
         USERNAME: ${USER}
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
@@ -39,7 +38,6 @@ services:
         target: "${HOME}/.gitconfig-real"
       - "mod-cache:/go-mod-cache"
       - "bin-cache:/opt/tools/bin"
-#       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       # GOARCH: amd64
       # GOOS: linux
