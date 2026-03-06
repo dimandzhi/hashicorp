@@ -16,16 +16,20 @@ services:
     # array). The sample below assumes your primary file is in the root of your project.
     #
     build:
-      context: ../modif
+      context: .
       dockerfile: Dockerfile
-      target: dev
+      # target: dev
       args:
-        GO_VERSION: 1.26.0
+        # GO_VERSION: 1.26.0
         USERNAME: ${USER}
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
     # Overrides default command so things don't shut down after the process ends.
     command: /bin/sh -c "while sleep 1000; do :; done"
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
     volumes:
       - "../../../:${HOME}/src/github.com/dimandzhi/hashicorp"
       - "${HOME}/.ssh:${HOME}/.ssh:ro"
@@ -34,14 +38,13 @@ services:
         source: "${HOME}/.gitconfig"
         target: "${HOME}/.gitconfig-real"
       - "mod-cache:/go-mod-cache"
-      - "bin-cache:/bin:/opt/tools/bin"
+      - "bin-cache:/opt/tools/bin"
+#       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
-      GO_TAGS: 'ui'
-      GOARCH: amd64
-      GOOS: linux
+      # GOARCH: amd64
+      # GOOS: linux
       GOMODCACHE: /go-mod-cache
       VERSION: 1.23.1
-      CGO_ENABLED: 1
       # GITHUB_TOKEN: ${GITHUB_TOKEN}
       # GOFLAGS: -mod=vendor
       # GOPATH: ${HOME}

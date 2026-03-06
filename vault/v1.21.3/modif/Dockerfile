@@ -225,38 +225,3 @@ COPY .build/entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
-
-FROM builder AS dev
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        bash-completion \
-        sudo \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* 
-
-ARG USERNAME
-ARG USER_ID
-ARG GROUP_ID
-
-RUN mkdir -p /etc/sudoers.d \
-	&& groupadd --gid ${GROUP_ID} ${USERNAME} \
-    && useradd --uid ${USER_ID} --gid $GROUP_ID -m ${USERNAME} \
-	&& usermod -aG sudo ${USERNAME} \
-	&& echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} \
-	&& echo "node ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/node \
-	&& chmod 0440 /etc/sudoers.d/*
-
-RUN mkdir /go-mod-cache && chmod 777 /go-mod-cache
-VOLUME /go-mod-cache
-
-RUN mkdir -p /opt/tools/bin && chmod 777 /opt/tools/bin
-VOLUME /opt/tools/bin
-
-RUN    go install github.com/cweill/gotests/gotests@latest \
-    && go install github.com/josharian/impl@latest \
-    && go install github.com/haya14busa/goplay/cmd/goplay@latest \
-    && go install github.com/go-delve/delve/cmd/dlv@latest \
-    && go install golang.org/x/tools/gopls@latest
-
-# ENTRYPOINT []
